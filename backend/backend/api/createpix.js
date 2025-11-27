@@ -13,10 +13,12 @@ export default async function handler(req, res) {
 
     try {
         const response = await axios.post(
-            process.env.EVOPAY_API_URL + "/pix/create",
+            "https://api.evopay.cash/v1/pix/create",
             {
-                amount: Number(valor),
-                description: "Doação via Vakinha"
+                value: Number(valor),
+                description: "Doação Davizinho",
+                payer_name: "Visitante",
+                payer_document: "00000000000"
             },
             {
                 headers: {
@@ -27,8 +29,8 @@ export default async function handler(req, res) {
         );
 
         return res.status(200).json({
-            copiaecola: response.data?.payload ?? "",
-            qrcode: response.data?.qrcode ?? ""
+            copiaecola: response.data?.pix_copia_cola ?? "",
+            qrcode: response.data?.qr_code_image ?? ""
         });
 
     } catch (error) {
